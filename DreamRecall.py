@@ -1,74 +1,52 @@
 import time
 import random
-from gtts import gTTS
-import playsound
-from sklearn.feature_extraction.text import CountVectorizer
+import pygame
+from datetime import datetime
 
-# 1. Before Sleep – Setup Dream Recall Mode
-def generate_sound_cue(memory_challenge):
-    """Generate a sound cue for the memory challenge."""
-    sound_text = f"Tonight, you will remember: {memory_challenge}"
-    tts = gTTS(text=sound_text, lang='en')
-    tts.save("sound_cue.mp3")
-    print("Sound cue generated. Playing now...")
-    playsound.playsound("sound_cue.mp3")
-
-def start_sleep_tracking():
-    """Simulate sleep tracking (can integrate with wearable APIs)."""
-    print("Sleep tracking started...")
-    time.sleep(5)  # Simulate sleep tracking for 5 seconds
-
-# 2. During Sleep – AI-Triggered Memory Training
+# Simulated sleep tracking and REM detection
 def detect_rem_sleep():
-    """Simulate REM sleep detection (can integrate with EEG or wearable APIs)."""
-    print("Detecting REM sleep...")
-    time.sleep(3)  # Simulate REM sleep detection
-    return True
+    """
+    Simulates REM sleep detection.
+    In a real-world scenario, this would interface with a wearable device or API.
+    """
+    print("Monitoring sleep stages...")
+    time.sleep(5)  # Simulate sleep monitoring
+    # Randomly simulate REM sleep detection
+    if random.choice([True, False]):
+        print("REM sleep detected!")
+        return True
+    return False
 
-def play_memory_cue():
-    """Play a memory cue during REM sleep."""
-    cues = ["Remember the number 7", "Think of a red apple", "Recall the word 'ocean'"]
-    cue = random.choice(cues)
-    print(f"Playing memory cue: {cue}")
-    # Integrate with sound playback (e.g., playsound or PyAudio)
+# Play sound cues during REM sleep
+def play_sound_cue(cue_file):
+    """
+    Plays a sound cue (e.g., binaural beats, whispered words).
+    """
+    pygame.mixer.init()
+    pygame.mixer.music.load(cue_file)
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        time.sleep(1)
 
-# 3. After Waking Up – Memory Game & Dream Journal
-def record_dream():
-    """Record the user's dream."""
-    dream = input("What do you remember from your dream? ")
-    return dream
+# Main function
+def main():
+    # User selects a memory challenge
+    memory_challenge = input("Enter your memory challenge (e.g., 'Remember the number 7'): ")
+    print(f"Memory challenge set: {memory_challenge}")
 
-def analyze_dream(dream):
-    """Analyze dream patterns using basic NLP."""
-    vectorizer = CountVectorizer().fit([dream])
-    vectors = vectorizer.transform([dream])
-    print(f"Dream analyzed. Keywords: {vectorizer.get_feature_names_out()}")
+    # Start sleep tracking
+    print("Starting sleep tracking...")
+    time.sleep(2)  # Simulate sleep tracking initialization
 
-def memory_game():
-    """Simple memory game based on the dream."""
-    print("Let's play a memory game!")
-    sequence = random.sample(range(1, 10), 3)  # Generate a random sequence
-    print("Memorize this sequence:", sequence)
-    time.sleep(5)  # Give the user time to memorize
-    user_input = input("Enter the sequence (e.g., 1 2 3): ")
-    user_sequence = list(map(int, user_input.split()))
-    if user_sequence == sequence:
-        print("Correct! Great memory!")
-    else:
-        print(f"Oops! The correct sequence was {sequence}.")
+    # Simulate REM sleep detection and sound cue triggering
+    while True:
+        if detect_rem_sleep():
+            print("Playing sound cue to reinforce memory...")
+            play_sound_cue("sound_cue.mp3")  # Replace with your sound file
+            break
+        else:
+            print("No REM sleep detected. Continuing monitoring...")
+            time.sleep(5)
 
-# Main Program
 if __name__ == "__main__":
-    # Before Sleep
-    memory_challenge = input("Enter your memory challenge (e.g., a number, object, or event): ")
-    generate_sound_cue(memory_challenge)
-    start_sleep_tracking()
-
-    # During Sleep
-    if detect_rem_sleep():
-        play_memory_cue()
-
-    # After Waking Up
-    dream = record_dream()
-    analyze_dream(dream)
-    memory_game()
+    main()
