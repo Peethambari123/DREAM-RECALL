@@ -1,8 +1,2 @@
-numpy
-scipy
-import pygame
-pygame.mixer.init()
-pygame.mixer.music.load("sound.mp3")
-pygame.mixer.music.play()
-
-some_sleep_tracking_library  # Replace with actual library for sleep tracking
+streamlit==1.30.0
+pygame==2.5.2
