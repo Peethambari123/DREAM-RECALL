@@ -3,7 +3,7 @@ import random
 import playsound
 import numpy as np
 from scipy.signal import butter, lfilter
-from some_sleep_tracking_library import SleepTracker  # Placeholder for actual library
+from some_sleep_tracking_library import SleepTracker  # Placeholder for actual libraryz
 
 # Sound cue function
 def play_sound_cue():
