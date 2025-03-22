@@ -1,52 +1,30 @@
 import time
 import random
-import pygame
-from datetime import datetime
+import playsound
+import numpy as np
+from scipy.signal import butter, lfilter
+from some_sleep_tracking_library import SleepTracker  # Placeholder for actual library
 
-# Simulated sleep tracking and REM detection
-def detect_rem_sleep():
-    """
-    Simulates REM sleep detection.
-    In a real-world scenario, this would interface with a wearable device or API.
-    """
-    print("Monitoring sleep stages...")
-    time.sleep(5)  # Simulate sleep monitoring
-    # Randomly simulate REM sleep detection
-    if random.choice([True, False]):
-        print("REM sleep detected!")
-        return True
-    return False
+# Sound cue function
+def play_sound_cue():
+    sound_files = ["cue1.mp3", "cue2.mp3", "cue3.mp3"]  # Replace with actual sound files
+    playsound.playsound(random.choice(sound_files))
 
-# Play sound cues during REM sleep
-def play_sound_cue(cue_file):
-    """
-    Plays a sound cue (e.g., binaural beats, whispered words).
-    """
-    pygame.mixer.init()
-    pygame.mixer.music.load(cue_file)
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        time.sleep(1)
+# Simulated REM detection function (Replace with actual EEG/wearable integration)
+def detect_rem_stage(sleep_data):
+    return np.random.choice([True, False], p=[0.3, 0.7])  # 30% chance of being in REM
 
-# Main function
-def main():
-    # User selects a memory challenge
-    memory_challenge = input("Enter your memory challenge (e.g., 'Remember the number 7'): ")
-    print(f"Memory challenge set: {memory_challenge}")
-
-    # Start sleep tracking
-    print("Starting sleep tracking...")
-    time.sleep(2)  # Simulate sleep tracking initialization
-
-    # Simulate REM sleep detection and sound cue triggering
+# Main loop to track sleep and trigger cues
+def monitor_sleep():
+    tracker = SleepTracker()
+    print("Sleep tracking started...")
     while True:
-        if detect_rem_sleep():
-            print("Playing sound cue to reinforce memory...")
-            play_sound_cue("sound_cue.mp3")  # Replace with your sound file
-            break
-        else:
-            print("No REM sleep detected. Continuing monitoring...")
-            time.sleep(5)
+        sleep_data = tracker.get_sleep_data()  # Fetch data from sensors
+        if detect_rem_stage(sleep_data):
+            print("REM detected, playing cue...")
+            play_sound_cue()
+            time.sleep(90)  # Wait before next cue to avoid disturbances
+        time.sleep(10)  # Check every 10 seconds
 
 if __name__ == "__main__":
-    main()
+    monitor_sleep()
